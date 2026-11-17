@@ -1,0 +1,15 @@
+# Environment used for the reported results (2026-11-15)
+python      3.12.3
+torch       2.5.1+cu121   (CUDA 12.1)
+numpy       2.4.3
+scipy       1.17.1
+pandas      3.0.1
+scikit-learn 1.8.0
+matplotlib  3.10.8
+pillow      12.1.1
+fair-esm    2.0.0
+GPU         NVIDIA RTX 3090 (24 GB), one card
+
+# efficient_kan is required by code/prototf_net.py (KAN layers):
+#   git clone https://github.com/Blealtan/efficient-kan ~/efficient_kan
+#   export PYTHONPATH=~/efficient_kan:$PYTHONPATH

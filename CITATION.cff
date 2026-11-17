@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper below."
+title: "One model, constant parameters: a constrained protein-to-motif scanner replaces per-factor binding models"
+type: software
+authors:
+  - family-names: TODO
+    given-names: TODO
+repository-code: "TODO: repository URL"
+license: MIT
+year: 2026
+preferred-citation:
+  type: article
+  title: "One model, constant parameters: a constrained protein-to-motif scanner replaces per-factor binding models"
+  journal: "Computational and Structural Biotechnology Journal"
+  year: 2026
+  authors:
+    - family-names: TODO
+      given-names: TODO
