@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this code, please cite the paper below."
-title: "One model, constant parameters: a constrained protein-to-motif scanner replaces per-factor binding models"
+title: "ProMoScan: a shared DNA backbone with protein-guided motif scanning for transcription-factor binding"
 type: software
 authors:
   - family-names: TODO
@@ -10,7 +10,7 @@ license: MIT
 year: 2026
 preferred-citation:
   type: article
-  title: "One model, constant parameters: a constrained protein-to-motif scanner replaces per-factor binding models"
+  title: "ProMoScan: a shared DNA backbone with protein-guided motif scanning for transcription-factor binding"
   journal: "Computational and Structural Biotechnology Journal"
   year: 2026
   authors:

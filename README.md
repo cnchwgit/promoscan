@@ -2,7 +2,7 @@
 
 Code, results and figure scripts for the manuscript
 
-> **One model, constant parameters: a constrained protein-to-motif scanner replaces per-factor binding models**
+> **ProMoScan: a shared DNA backbone with protein-guided motif scanning for transcription-factor binding**
 
 ProMoScan is a single protein-conditioned model that predicts transcription-factor (TF) binding for any
 factor without a per-factor head. The protein sequence is embedded with a frozen ESM-2 model and mapped
@@ -125,7 +125,7 @@ ESM-2 embeddings. `docs/DATA.md` explains exactly what to download and where to 
 
 ```bibtex
 @article{promoscan2026,
-  title   = {One model, constant parameters: a constrained protein-to-motif scanner replaces per-factor binding models},
+  title   = {ProMoScan: a shared DNA backbone with protein-guided motif scanning for transcription-factor binding},
   author  = {TODO},
   journal = {Computational and Structural Biotechnology Journal},
   year    = {2026}
