@@ -1,9 +1,0 @@
-{
-  "labels": ["DNA-only", "ProMoScan L10", "ProMoScan M34", "ProMoScan A2", "ProMoScan 3-seed ens"],
-  "_note": "canonical numbers: seen-TF AUC; hg38 row n=200 TF, shuffle rows n=25 TF",
-  "series": {
-    "hg38 random background": [0.8744, 0.8504, 0.8907, 0.9409, 0.9486],
-    "Dinucleotide shuffle": [0.5994, 0.6064, 0.6513, 0.6703, 0.6773],
-    "Mononucleotide shuffle": [0.4332, 0.4953, 0.5224, 0.4979, 0.5099]
-  }
-}

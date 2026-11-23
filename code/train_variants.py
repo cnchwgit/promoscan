@@ -283,8 +283,8 @@ def main():
     ap.add_argument('--tf-list', default=None,
                     help='single_tf 模式: TF 名单文件（每行一个）')
     ap.add_argument('--family-map', default=str(BASE / 'data/tf_family_mapping.tsv'))
-    ap.add_argument('--data-root', default='/home/chenw/work/chiqseq/hg38_tranfac/negative_code/datasets')
-    ap.add_argument('--protein-fasta', default=str(BASE / 'sequenceAnalysis/tf_sequences_final_v2.fasta'))
+    ap.add_argument('--data-root', default=str(BASE / 'data/rawdata'))
+    ap.add_argument('--protein-fasta', default=os.environ.get('PROT_FASTA', str(BASE / 'data/tf_sequences_final_v2.fasta')))
     ap.add_argument('--out-dir', required=True)
     ap.add_argument('--epochs', type=int, default=18)
     ap.add_argument('--batch-size', type=int, default=256)

@@ -18,9 +18,9 @@ from data_utils import load_protein_fasta  # noqa: E402
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--protein-fasta', default=str(BASE / 'sequenceAnalysis/tf_sequences_final_v2.fasta'))
+    ap.add_argument('--protein-fasta', default=str(BASE / 'data/tf_sequences_final_v2.fasta'))
     ap.add_argument('--model-name', default='esm2_t33_650M_UR50D')
-    ap.add_argument('--out', default=str(BASE / 'results/esm2_emb_650M.pt'))
+    ap.add_argument('--out', default=str(BASE / 'data/esm2_emb_650M.pt'))
     ap.add_argument('--batch-size', type=int, default=4)
     ap.add_argument('--max-len', type=int, default=1022)
     args = ap.parse_args()

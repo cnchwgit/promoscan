@@ -9,7 +9,7 @@ D1 落地：把 CBR-KAN (PLOS ONE 2025) 的 50-数据集基准整理成 ProMoSca
   - 负样本：匹配 repeat fraction / length / GC content（Deng et al. 协议）
   - 切分：10% 验证 + 剩余 90% 的 10% 作测试（≈81/10/9），分层；SEED=2021
 
-产出（全部落在 proDeep/code/benchmark/ 与 proDeep/data/bench50/）：
+产出（全部落在 ProMoScan/code/benchmark/ 与 ProMoScan/data/bench50/）：
   data/bench50/train/{DSID}.{pos,neg}.fasta
   data/bench50/test/{DSID}.{pos,neg}.fasta
   code/benchmark/bench50.csv         # TF_Name=DSID, GSM_ID=DSID, Symbol=TF symbol

@@ -9,12 +9,12 @@ S1 的真实检验：模型预测的 M 个 motif 是否**真的对应**该 TF �
   · rank1_acc = 自己的 DB PWM 排第一的比例（随机基线 1/N）
 若 own_sim ≫ 非对角 且 rank1 ≫ 1/N → S1 真的把 motif 学进去了。
 
-用法: python3 eval_motif_recovery.py --ckpt results/prodeep_v1_L3_S1
+用法: python3 eval_motif_recovery.py --ckpt results/promoscan_L3_S1
 """
 import argparse, csv, json, os, sys
 from pathlib import Path
 import torch
-from prodeep_v1 import ProMoScan                                    # noqa: E402
+from promoscan import ProMoScan                                    # noqa: E402
 from pwm_supervision import load_db_pwms, pwm_max_sim, info_content, _revcomp  # noqa: E402
 
 CODE = Path(__file__).resolve().parent
@@ -47,8 +47,9 @@ def main():
     db = {k: v for k, v in db.items() if float(info_content(v).sum()) >= a.min_ic}
     rowsc = list(csv.DictReader(open(CODE / 'protoTF/full_1043.csv')))
     tf2gsm = {r['TF_Name']: r['GSM_ID'] for r in rowsc}
-    prot = load_protein_fasta(str(BASE / 'sequenceAnalysis/tf_sequences_final_v2.fasta'))
-    zs = json.load(open('/home/chenw/.openclaw/workspace/multiTF/results/prototf_zs_random10/zero_shot_summary.json'))
+    prot = load_protein_fasta(os.environ.get('PROT_FASTA', str(BASE / 'data/tf_sequences_final_v2.fasta')))
+    zs_path = os.environ.get('PRODEEP_ZS_SUM', str(BASE / 'data/zero_shot_summary.json'))
+    zs = json.load(open(zs_path))
     hold = set(zs['holdout_tfs'])
     seen = [t for t in tf2gsm if t not in hold and t in prot and t in db]
     hd = [t for t in hold if t in tf2gsm and t in prot and t in db]

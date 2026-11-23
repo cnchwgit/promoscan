@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: UTF-8
 """
-proDeep-v1 训练 + 评估
+ProMoScan 训练 + 评估
 
 目标：验证"蛋白 → Motif → 扫描"这条唯一通路能否在**留出 TF** 上带来 ΔAUC 增益。
 
@@ -10,7 +10,7 @@ proDeep-v1 训练 + 评估
 对照：蛋白打乱
 
 用法：
-  python3 train_prodeep_v1.py --n-tf 938 --samples-per-class 100 --epochs 6
+  python3 train_promoscan.py --n-tf 938 --samples-per-class 100 --epochs 6
 """
 import argparse
 import csv
@@ -34,7 +34,7 @@ sys.path.insert(0, str(CODE))
 sys.path.insert(0, str(CODE / 'protoTF'))
 sys.path.append(os.path.expanduser('~/efficient_kan'))
 
-from prodeep_v1 import ProMoScan, dna_onehot, revcomp_seq      # noqa: E402
+from promoscan import ProMoScan, dna_onehot, revcomp_seq      # noqa: E402
 from pwm_supervision import (load_db_pwms, s1_loss,                # noqa: E402
                              motif_set_pair_sim, pwm_all_to_all)
 from protein_features import build_protein_features, esm_available   # noqa: E402
@@ -44,10 +44,10 @@ from data_utils import (build_vocab, seq_to_ids, load_fasta_balanced,   # noqa: 
 BASE = Path(__file__).resolve().parents[1]
 DATA_ROOT = str(BASE / 'raw_data')
 CSV = str(CODE / 'protoTF/full_1043.csv')
-PROT_FASTA = str(BASE / 'sequenceAnalysis/tf_sequences_final_v2.fasta')
+PROT_FASTA = os.environ.get('PROT_FASTA', str(BASE / 'data/tf_sequences_final_v2.fasta'))
 ZS_SUM = Path(os.environ.get('PRODEEP_ZS_SUM',
-                            '/home/chenw/.openclaw/workspace/multiTF/results/prototf_zs_random10/zero_shot_summary.json'))
-ESM_PT = os.environ.get('PRODEEP_ESM_PT', str(BASE / 'data/distance/esm2_emb_650M.pt'))
+                            str(BASE / 'data/zero_shot_summary.json')))
+ESM_PT = os.environ.get('PRODEEP_ESM_PT', str(BASE / 'data/esm2_emb_650M.pt'))
 VOCAB = build_vocab()
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 # 单线程纪律（2026-09-24 用户指令）：PRODEEP_SINGLE_THREAD=1 → torch 线程=1，DataLoader workers=0
@@ -255,7 +255,7 @@ def main():
                     help='身份接口容量（E9 容量对照）：std=256 隐层；linear=单层；wide=512+512')
     ap.add_argument('--init-motif-pretrain', default='',
                     help='用 motif-only 预训练权重初始化（蛋白塔 + motif 头，strict=False）')
-    ap.add_argument('--out-dir', default=str(BASE / 'results/prodeep_v1'))
+    ap.add_argument('--out-dir', default=str(BASE / 'results/promoscan'))
     ap.add_argument('--save-every', type=int, default=1,
                     help='每 N 个 epoch 存一次 last.pt（防意外中断丢进度）')
     ap.add_argument('--resume', action='store_true',

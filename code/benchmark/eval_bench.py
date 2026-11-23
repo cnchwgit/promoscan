@@ -16,9 +16,9 @@ from sklearn.metrics import roc_auc_score
 
 CODE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(CODE)); sys.path.insert(0, str(CODE / 'protoTF'))
-from prodeep_v1 import ProMoScan, dna_onehot  # noqa: E402
+from promoscan import ProMoScan, dna_onehot  # noqa: E402
 from data_utils import build_vocab, seq_to_ids  # noqa: E402
-from prodeep_v1 import revcomp_seq  # noqa: E402,F401
+from promoscan import revcomp_seq  # noqa: E402,F401
 
 BASE = Path(__file__).resolve().parents[2]
 BENCH = BASE / 'code/benchmark'
@@ -131,7 +131,7 @@ def load_net(path):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--ckpt', default=str(BASE / 'results/prodeep_v1_BENCH50/best_model.pt'))
+    ap.add_argument('--ckpt', default=str(BASE / 'results/promoscan_BENCH50/best_model.pt'))
     ap.add_argument('--ens', default='', help='逗号分隔的额外 ckpt，与 --ckpt 一起做 seed 集成（概率平均）')
     ap.add_argument('--meta', default=str(BENCH / 'bench50_meta.json'))
     ap.add_argument('--esm-pt', default=str(BENCH / 'bench50_esm.pt'))

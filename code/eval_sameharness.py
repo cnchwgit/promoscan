@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding: UTF-8
-"""同一套评估口径下，把 ProtoTF 和 proDeep-v1 拉齐对比（修完对齐 bug 之后）。
+"""同一套评估口径下，把 ProtoTF 和 ProMoScan 拉齐对比（修完对齐 bug 之后）。
 
 口径（两边完全一致）：
   · 同一批配对（sample_pairs，seed=42，150 对，seen / holdout 两个池）
@@ -24,7 +24,7 @@ CODE = BASE / 'code'
 for p in [str(CODE), str(CODE / 'protoTF'), os.path.expanduser('~/efficient_kan')]:
     sys.path.append(p)
 from prototf_net import ProtoTFNet, CBRKANSharedBackbone, KAN          # noqa: E402
-from prodeep_v1 import ProMoScan, dna_onehot                        # noqa: E402
+from promoscan import ProMoScan, dna_onehot                        # noqa: E402
 from protein_features import build_protein_features                 # noqa: E402
 from data_utils import (build_vocab, seq_to_ids, load_fasta_balanced,   # noqa: E402
                         load_protein_fasta, encode_proteins)            # noqa: E402
@@ -33,8 +33,8 @@ DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 DATA_ROOT = str(BASE / 'raw_data')
 ZS = Path(os.environ.get('ZS_RESULTS', BASE / 'external/multiTF_results'))
 ZS_SUM = Path(os.environ.get('PRODEEP_ZS_SUM', str(ZS / 'prototf_zs_random10/zero_shot_summary.json')))
-PROT_FASTA = str(BASE / 'sequenceAnalysis/tf_sequences_final_v2.fasta')
-ESM_PT = os.environ.get('PRODEEP_ESM_PT', str(BASE / 'data/distance/esm2_emb_650M.pt'))
+PROT_FASTA = os.environ.get('PROT_FASTA', str(BASE / 'data/tf_sequences_final_v2.fasta'))
+ESM_PT = os.environ.get('PRODEEP_ESM_PT', str(BASE / 'data/esm2_emb_650M.pt'))
 CSV = str(CODE / 'protoTF/full_1043.csv')
 PAD = 200
 VOCAB = build_vocab()
@@ -90,7 +90,7 @@ def score_dna_only(net, seqs, bs=256):
 
 @torch.no_grad()
 def score_our(net, seqs, aa, bs=128):
-    """proDeep-v1：整列表按序打分"""
+    """ProMoScan：整列表按序打分"""
     out = []
     for i in range(0, len(seqs), bs):
         chunk = seqs[i:i + bs]
@@ -115,7 +115,7 @@ def main():
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument('--tags', default='L3,L5',
-                    help='逗号分隔的 proDeep 配置标签（读 results/prodeep_v1_<tag>/best_model.pt）')
+                    help='逗号分隔的 ProMoScan 配置标签（读 results/promoscan_<tag>/best_model.pt）')
     ap.add_argument('--out', default='results/sameharness_compare.json')
     ap.add_argument('--pairs', type=int, default=150)
     ap.add_argument('--ref', default='proto', help='配对差值的参考标签（默认 proto）')
@@ -165,7 +165,7 @@ def main():
     ours = {}
     tag_feats = {}
     for tag in TAGS:
-        ck = torch.load(BASE / f'results/prodeep_v1_{tag}/best_model.pt', map_location='cpu', weights_only=False)
+        ck = torch.load(BASE / f'results/promoscan_{tag}/best_model.pt', map_location='cpu', weights_only=False)
         cfg = ck['config']
         n = ProMoScan(len(VOCAB), M=cfg['M'], W=cfg['W'],
                          use_dna_context=cfg.get('use_dna_context', False),

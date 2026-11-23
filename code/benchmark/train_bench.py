@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: UTF-8
 """D1 基准：在 CBR-KAN 的 50-数据集基准上训练**一个**多 TF ProMoScan。
-复用 train_prodeep_v1 的组件（ProMoScan / PairDataset / collate / ABPool）。
+复用 train_promoscan 的组件（ProMoScan / PairDataset / collate / ABPool）。
 
 数据：code/benchmark/prep_bench.py 产出的 data/bench50/train + bench50*.{csv,pt,fasta,json}
 """
@@ -23,10 +23,10 @@ from torch.utils.data import DataLoader
 CODE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(CODE))
 sys.path.insert(0, str(CODE / 'protoTF'))
-import train_prodeep_v1 as T          # noqa: E402  触发 sys.path（code/protoTF, efficient_kan, VOCAB）
-from prodeep_v1 import ProMoScan      # noqa: E402
+import train_promoscan as T          # noqa: E402  触发 sys.path（code/protoTF, efficient_kan, VOCAB）
+from promoscan import ProMoScan      # noqa: E402
 from data_utils import build_vocab, seq_to_ids, load_fasta_balanced  # noqa: E402
-from prodeep_v1 import dna_onehot     # noqa: E402
+from promoscan import dna_onehot     # noqa: E402
 from pwm_supervision import load_db_pwms, s1_loss  # noqa: E402
 
 BASE = Path(__file__).resolve().parents[2]
@@ -42,7 +42,7 @@ def main():
     ap.add_argument('--esm-pt', default=str(BENCH / 'bench50_esm.pt'))
     ap.add_argument('--alias', default=str(BENCH / 'bench50_alias.json'))
     ap.add_argument('--train-root', default=str(BASE / 'data/bench50/train'))
-    ap.add_argument('--out-dir', default=str(BASE / 'results/prodeep_v1_BENCH50'))
+    ap.add_argument('--out-dir', default=str(BASE / 'results/promoscan_BENCH50'))
     ap.add_argument('--M', type=int, default=16)
     ap.add_argument('--W', type=int, default=16)
     ap.add_argument('--epochs', type=int, default=16)

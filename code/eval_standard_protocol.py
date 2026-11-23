@@ -7,7 +7,7 @@
   · 负样本 = hg38 随机 200bp 基因组窗口（200 条，seed 固定可复现）
   · 1:1 平衡；对每个 TF 报 ROC-AUC / Youden 最佳阈值准确率 / 0.5 阈值准确率
   · 汇总：seen TF（前 n_tf 个）与 holdout TF 各自的均值
-对照模型：DNA-only(variant E) / ProtoTF(K=167) / 任意 proDeep tag；--ens 支持 seed 集成
+对照模型：DNA-only(variant E) / ProtoTF(K=167) / 任意 ProMoScan tag；--ens 支持 seed 集成
 """
 import argparse
 import csv
@@ -25,7 +25,7 @@ CODE = BASE / 'code'
 for p in [str(CODE), str(CODE / 'protoTF'), os.path.expanduser('~/efficient_kan')]:
     sys.path.append(p)
 from prototf_net import ProtoTFNet, CBRKANSharedBackbone, KAN            # noqa: E402
-from prodeep_v1 import ProMoScan, dna_onehot                          # noqa: E402
+from promoscan import ProMoScan, dna_onehot                          # noqa: E402
 from protein_features import build_protein_features                      # noqa: E402
 from data_utils import (build_vocab, seq_to_ids, load_fasta_balanced,    # noqa: E402
                         load_protein_fasta)                              # noqa: E402
@@ -34,7 +34,7 @@ from bg_utils import Genome, dinuc_shuffle, mono_shuffle, stable_seed           
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 DATA_ROOT = str(BASE / 'raw_data')
 ZS = Path(os.environ.get('ZS_RESULTS', BASE / 'external/multiTF_results'))
-PROT_FASTA = str(BASE / 'sequenceAnalysis/tf_sequences_final_v2.fasta')
+PROT_FASTA = os.environ.get('PROT_FASTA', str(BASE / 'data/tf_sequences_final_v2.fasta'))
 CSV = str(CODE / 'protoTF/full_1043.csv')
 PAD = 200
 VOCAB = build_vocab()
@@ -98,7 +98,7 @@ def score_proto(net, seqs, aa, bs=128):
 
 
 def load_net(tag):
-    ck = torch.load(BASE / f'results/prodeep_v1_{tag}/best_model.pt',
+    ck = torch.load(BASE / f'results/promoscan_{tag}/best_model.pt',
                     map_location='cpu', weights_only=False)
     cfg = ck['config']
     n = ProMoScan(len(VOCAB), M=cfg['M'], W=cfg['W'],

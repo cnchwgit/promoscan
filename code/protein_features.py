@@ -14,8 +14,8 @@ import torch
 
 BASE = Path(__file__).resolve().parents[1]
 # 允许用环境变量替换蛋白特征文件（E9c 身份来源对照：换成人造 per-TF 码）
-ESM_PT = os.environ.get('PRODEEP_ESM_PT', str(BASE / 'data/distance/esm2_emb_650M.pt'))
-PROT_FASTA = str(BASE / 'sequenceAnalysis/tf_sequences_final_v2.fasta')
+ESM_PT = os.environ.get('PRODEEP_ESM_PT', str(BASE / 'data/esm2_emb_650M.pt'))
+PROT_FASTA = os.environ.get('PROT_FASTA', str(BASE / 'data/tf_sequences_final_v2.fasta'))
 ESM_DIM = 1280
 
 

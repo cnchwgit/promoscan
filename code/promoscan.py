@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: UTF-8
 """
-proDeep-v1 —— 蛋白 → Motif（PWM/卷积核）→ 扫描 DNA
+ProMoScan —— 蛋白 → Motif（PWM/卷积核）→ 扫描 DNA
 
 设计见 MODEL_DESIGN.md。核心约束：
   · 蛋白影响预测的**唯一通路**是生成的核 θ（+ α, β）；没有 TF index、没有 per-TF 头

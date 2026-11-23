@@ -6,6 +6,7 @@
 - 直接对 hg38.fa 随机字节寻址（依赖 .fai：偏移/行长/行宽），无需 pysam/samtools
 - 默认排除与正样本 peak 所在染色体无关，可与正样本数量 1:1
 """
+import os
 import random
 import zlib
 from pathlib import Path
@@ -20,7 +21,7 @@ def stable_seed(s, mod=100000):
     return zlib.crc32(str(s).encode('utf-8')) % mod
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_FA = '/home/chenw/work/chiqseq/hg38_tranfac/negative_code/hg38.fa'
+DEFAULT_FA = os.environ.get('HG38_FA', str(HERE.parent / 'data/hg38.fa'))
 DEFAULT_LEN = 200
 PRIMARY = [f'chr{i}' for i in range(1, 23)] + ['chrX', 'chrY']
 

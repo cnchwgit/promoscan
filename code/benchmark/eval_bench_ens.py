@@ -32,9 +32,9 @@ ARCHIVE = RES / 'bench50_table_ens.json'
 TMP = RES / 'bench50_table_ens.recheck.json'
 
 CKPTS = {
-    'seed_a': RES / 'prodeep_v1_BENCH50' / 'best_model.pt',
-    'seed_b': RES / 'prodeep_v1_BENCH50_s1' / 'best_model.pt',
-    'seed_c': RES / 'prodeep_v1_BENCH50_s2' / 'best_model.pt',
+    'seed_a': RES / 'promoscan_BENCH50' / 'best_model.pt',
+    'seed_b': RES / 'promoscan_BENCH50_s1' / 'best_model.pt',
+    'seed_c': RES / 'promoscan_BENCH50_s2' / 'best_model.pt',
 }
 
 

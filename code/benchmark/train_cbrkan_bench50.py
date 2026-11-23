@@ -9,7 +9,7 @@
 
 输出
   results/bench50_cbrkan/{dsid}.json
-  results/bench50_table_cbrkan.json     （compare_bench50.py 直接读）
+  results/bench50_table_cbrkan.json     （逐数据集汇总）
 用法
   python3 code/benchmark/train_cbrkan_bench50.py            # 全量 50 个，幂等
 """
@@ -32,7 +32,7 @@ torch.set_num_threads(1)
 BASE = Path(os.environ.get('PROMOSCAN_ROOT',
                           Path(__file__).resolve().parents[2]))
 TFMTL = Path(os.environ.get('TFMTL_ROOT', BASE / 'external/TF-MTL'))
-for p in [str(TFMTL / 'code' / 'models'), str(TFMTL / 'code'), str(TFMTL), '/home/chenw/efficient_kan']:
+for p in [str(TFMTL / 'code' / 'models'), str(TFMTL / 'code'), str(TFMTL), os.path.expanduser('~/efficient_kan')]:
     if p not in sys.path:
         sys.path.insert(0, p)
 
@@ -175,7 +175,7 @@ def main():
         print(f'[{k}/{len(dsids)}] {dsid} AUC={res["auc"]:.4f} {res["train_s"]:.0f}s', flush=True)
         torch.cuda.empty_cache()
 
-    # 汇总成 compare_bench50.py 能读的格式
+    # 汇总成逐数据集表
     # 只收逐数据集结果；summary.json 也在同一目录，必须排除（否则缺 'auc' 键就崩）
     rows = [json.loads(p.read_text()) for p in sorted(out.glob('*.json'))
             if p.name != 'summary.json']

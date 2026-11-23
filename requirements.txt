@@ -1,12 +1,9 @@
 # Dependencies
 numpy>=1.26
-scipy>=1.11
 pandas>=2.0
 scikit-learn>=1.3
-matplotlib>=3.8          # figures; also needs pillow for TIFF output
-pillow>=10.0
 torch>=2.0               # training and evaluation
-fair-esm>=2.0            # only for rebuild_embeddings (frozen ESM-2 650M)
+fair-esm>=2.0            # only needed to rebuild ESM-2 protein embeddings
 
 # Not on PyPI — install manually:
 #   git clone https://github.com/Blealtan/efficient-kan ~/efficient_kan

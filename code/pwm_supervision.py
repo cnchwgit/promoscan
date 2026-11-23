@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: UTF-8
 """
-S1：protein → PWM 直接监督（proDeep-v1）
+S1：protein → PWM 直接监督（ProMoScan）
 
 把"靠扫描 loss 间接学 PWM"变成"直接用数据库 PWM 监督"。
 数据：HOCOMOCO v11 core HUMAN + JASPAR 2024 CORE vertebrates → 1280 个 motif

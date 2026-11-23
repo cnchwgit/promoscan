@@ -15,7 +15,7 @@
 判读：
   correct > nearest > random ≈ farthest ≈ centroid  → 蛋白信息是**分级**的（同家族共享 + 身份区分）
   correct ≈ nearest ≈ random                        → 蛋白只是占位，没有身份信息
-输出 results/bench50_protein_controls.json + paper/tables/Table6_protein_controls.md
+输出 results/bench50_protein_controls.json
 """
 import argparse
 import json
@@ -28,7 +28,7 @@ from sklearn.metrics import roc_auc_score
 
 CODE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(CODE)); sys.path.insert(0, str(CODE / 'protoTF'))
-from prodeep_v1 import ProMoScan, dna_onehot  # noqa: E402
+from promoscan import ProMoScan, dna_onehot  # noqa: E402
 from data_utils import build_vocab, seq_to_ids  # noqa: E402
 
 BASE = Path(__file__).resolve().parents[2]
@@ -73,7 +73,7 @@ def load_net(path):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--ckpt', default=str(BASE / 'results/prodeep_v1_BENCH50/best_model.pt'))
+    ap.add_argument('--ckpt', default=str(BASE / 'results/promoscan_BENCH50/best_model.pt'))
     ap.add_argument('--meta', default=str(BENCH / 'bench50_meta.json'))
     ap.add_argument('--esm-pt', default=str(BENCH / 'bench50_esm.pt'))
     ap.add_argument('--test-root', default=str(BASE / 'data/bench50/test'))
@@ -136,22 +136,7 @@ def main():
     for k in keys:
         print(f'  {k:9s} {summary[k]:.4f}  (Δ vs correct {summary[k]-summary["correct"]:+.4f})')
 
-    # markdown
-    md = ['# Table 6 · 蛋白输入归因对照（50 数据集，只推理）\n',
-          '| 蛋白输入 | 含义 | 平均 ROC-AUC | Δ vs 正确蛋白 |',
-          '|---|---|---|---|']
-    desc = {'correct': '正确蛋白', 'nearest': '蛋白空间最近邻（同家族代理）',
-            'random': '随机另一数据集的蛋白', 'farthest': '蛋白空间最远',
-            'centroid': '全部蛋白均值（通用占位）'}
-    for k in keys:
-        md.append(f'| {k} | {desc[k]} | {summary[k]:.4f} | {summary[k]-summary["correct"]:+.4f} |')
-    md.append(f'\n> 模型：`{Path(a.ckpt).parent.name}`（单 seed，与 Table 2 单模型行同源）。'
-              '序列、权重、评测脚本完全相同，仅替换蛋白向量。\n'
-              '> 判读：任何替换都在 50/50 个数据集上变差，且替换蛋白与正确蛋白的余弦相似度与损失无关'
-              '（Spearman ρ≈0）→ 蛋白输入携带的是**离散的身份信息**，不是平滑的家族相似度；'
-              '通用蛋白（centroid）损失最小 → 模型被"错误的特定身份"主动误导。')
-    (BASE / 'paper/tables/Table6_protein_controls.md').write_text('\n'.join(md), encoding='utf-8')
-    print('written', a.out, 'and paper/tables/Table6_protein_controls.md')
+    print('written', a.out)
 
 
 if __name__ == '__main__':
